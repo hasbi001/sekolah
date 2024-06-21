@@ -30,7 +30,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
                   <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link btn btn-sm btn-primary" href="javascript:void()" data-toggle="modal" data-target="#formadd">Add</a>
+                  <a class="nav-link btn btn-sm btn-primary" href="javascript:void(0)" onclick="add()">Add</a>
                 </li>
               </ul>
               
@@ -43,12 +43,13 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
         </div>
 
         <!-- form add  -->
-        <div class="modal fade" id="formadd" tabindex="-1" role="dialog" aria-labelledby="formaddLabel" aria-hidden="true">
+        <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <form action="" method="post">
+                <input type="hidden" id="id" name="id" value="" />
                 <div class="modal-header">
-                  <h5 class="modal-title" id="formaddLabel">Add Siswa</h5>
+                  <h5 class="modal-title" id="formLabel">Form Siswa</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -87,19 +88,30 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
     <script>
         $(document).ready(function () {
             $.ajax({
+                header:{
+                  "Content-Type":"application/json"
+                },
                 url: "http://localhost:8080/api/siswa",
                 method: "GET",
+                dataType:'JSON',
                 success: function (data) {
                     var list = "";
                     data.forEach(item => {
-                      list = list + '<div class="card mr-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">'+item.fullName+'</h5><p class="card-text"> <br><label>Kelas</label> : '+item.kelas+' <br><label>Alamat</label> : '+item.alamat+' </p><a href="javascript:void()" class="card-link">Update</a><a href="javascript:void()" class="card-link">Delete</a></div></div>';
+                      list = list + '<div class="card mr-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">'+item.fullName+'</h5><p class="card-text"> <br><label>Kelas</label> : '+item.kelas+' <br><label>Alamat</label> : '+item.alamat+' </p><button class="btn btn-warning btn-sm mr-2" onclick="update('+item.id+')">Update</button><button class="btn btn-danger btn-sm" onclic="hapus('+item.id+')">Delete</button></div></div>';
                     });
                     $("#list").html(list);
                 }
             });
         });
+        function add() {
+          document.getElementById("form").reset;
+          $("#form").modal("show");
+        }
         function save() {
           $.ajax({
+                header:{
+                  "Content-Type":"application/json"
+                },
                 url: "http://localhost:8080/api/siswa",
                 method: "POST",
                 dataType:'JSON',
@@ -112,6 +124,40 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
                 },
                 success: function (data) {
                   location.reload();
+                }
+            });
+        }
+        function hapus(id) {
+          $.ajax({
+                header:{
+                  "Content-Type":"application/json"
+                },
+                url: "http://localhost:8080/api/siswa/"+id,
+                method: "DELETE",
+                dataType:'JSON',
+               
+                success: function (data) {
+                  location.reload();
+                }
+            });
+        }
+        function update(id) {
+            $.ajax({
+                header:{
+                  "Content-Type":"application/json"
+                },
+                url: "http://localhost:8080/api/siswa/"+id,
+                method: "GET",
+                dataType:'JSON',
+                success: function (data) {
+                  document.getElementById("form").reset;
+                  $("#id").val(data.id);
+                  $("#fullName").val(data.fullName);
+                  $("#kelas").val(data.kelas);
+                  $("#alamat").val(data.alamat);
+                  $("#walimurid").val(data.walimurid);
+                  $("#walikelas").val(data.walikelas);
+                  $("#form").modal("show");
                 }
             });
         }
