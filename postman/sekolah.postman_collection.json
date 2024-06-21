@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "df05b3ca-863f-4131-8c30-b688b5aa3a1a",
+		"name": "sekolah",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12079598"
+	},
+	"item": [
+		{
+			"name": "add siswa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"Hilman\",\r\n    \"kelas\": \"1A\",\r\n    \"alamat\": \"Cipayung, Jakarta Timur\",\r\n    \"walimurid\": \"Siti\",\r\n    \"walikelas\": \"Linda\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/siswa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"siswa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list siswa",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/siswa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"siswa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view siswa",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/siswa/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"siswa",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update siswa",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"Hilman\",\r\n    \"kelas\": \"1A\",\r\n    \"alamat\": \"Cipayung, Jakarta Timur\",\r\n    \"walimurid\": \"Siti\",\r\n    \"walikelas\": \"Linda\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/siswa/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"siswa",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete siswa",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/siswa/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"siswa",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
