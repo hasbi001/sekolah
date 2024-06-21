@@ -84,6 +84,44 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
             </div>
           </div>
         </div>
+
+        <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="detailLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="detailLabel">Form Siswa</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="fs-14">
+                    <label>Full Name</label> : 
+                    <span id="span-fullName"></span>
+                  </div>
+                  <div class="fs-14">
+                    <label>Kelas</label> :
+                    <span id="span-kelas"></span>
+                  </div>
+                  <div class="fs-14">
+                    <label>Alamat</label> :
+                    <span id="span-alamat"></span>
+                  </div>
+                  <div class="fs-14">
+                    <label>Wali Murid</label> :
+                    <span id="span-walimurid"></span>
+                  </div>
+                  <div class="fs-14">
+                    <label>Wali Kelas</label> :
+                    <span id="span-walikelas"></span>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+          </div>
+        </div>
     </body>
     <script>
         $(document).ready(function () {
@@ -97,7 +135,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
                 success: function (data) {
                     var list = "";
                     data.forEach(item => {
-                      list = list + '<div class="card mr-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">'+item.fullName+'</h5><p class="card-text"> <br><label>Kelas</label> : '+item.kelas+' <br><label>Alamat</label> : '+item.alamat+' </p><button class="btn btn-warning btn-sm mr-2" onclick="update('+item.id+')">Update</button><button class="btn btn-danger btn-sm" onclic="hapus('+item.id+')">Delete</button></div></div>';
+                      list = list + '<div class="card mr-2" style="width: 18rem;"><div class="card-body"><h5 class="card-title">'+item.fullName+'</h5><p class="card-text"> <br><label>Kelas</label> : '+item.kelas+' <br><label>Alamat</label> : '+item.alamat+' </p><button class="btn btn-warning btn-sm mr-2" onclick="update('+item.id+')">Update</button><button class="btn btn-info btn-sm mr-2" onclick="detail('+item.id+')">Detail</button><button class="btn btn-danger btn-sm" onclic="hapus('+item.id+')">Delete</button></div></div>';
                     });
                     $("#list").html(list);
                 }
@@ -108,7 +146,9 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
           $("#form").modal("show");
         }
         function save() {
-          $.ajax({
+          var id = $("#id").val();
+          if (id == '') {
+            $.ajax({
                 header:{
                   "Content-Type":"application/json"
                 },
@@ -126,6 +166,29 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
                   location.reload();
                 }
             });
+          }
+          else
+          {
+            $.ajax({
+                header:{
+                  "Content-Type":"application/json"
+                },
+                url: "http://localhost:8080/api/siswa/"+id,
+                method: "PUT",
+                dataType:'JSON',
+                data: {
+                  "fullName":$("#fullName").val(),
+                  "kelas":$("#kelas").val(),
+                  "alamat":$("#alamat").val(),
+                  "walimurid":$("#walimurid").val(),
+                  "walikelas":$("#walikelas").val()
+                },
+                success: function (data) {
+                  location.reload();
+                }
+            });
+          }
+          
         }
         function hapus(id) {
           $.ajax({
@@ -158,6 +221,24 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
                   $("#walimurid").val(data.walimurid);
                   $("#walikelas").val(data.walikelas);
                   $("#form").modal("show");
+                }
+            });
+        }
+        function detail(id) {
+            $.ajax({
+                header:{
+                  "Content-Type":"application/json"
+                },
+                url: "http://localhost:8080/api/siswa/"+id,
+                method: "GET",
+                dataType:'JSON',
+                success: function (data) {
+                  $("#span-fullName").html(data.fullName);
+                  $("#span-kelas").html(data.kelas);
+                  $("#span-alamat").html(data.alamat);
+                  $("#span-walimurid").html(data.walimurid);
+                  $("#span-walikelas").html(data.walikelas);
+                  $("#detail").modal("show");
                 }
             });
         }
